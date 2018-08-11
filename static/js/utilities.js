@@ -1,5 +1,5 @@
 $(document).ready(function(){
-    var socket = io.connect('http://localhost:5000/test');
+    var socket = io.connect('https://localhost:5000/test');
     socket.on('message', function(msg) {
         $('#messages').append('<p>Received: ' + msg.text + '</p>');
     });
@@ -8,4 +8,3 @@ $(document).ready(function(){
         return false;
     });
 });
-

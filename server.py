@@ -9,6 +9,7 @@ import gevent
 import gevent.pywsgi as wsgi
 
 app = flask.Flask(__name__)
+app.debug = True
 app.config['SECRET_KEY'] = 'secret!'
 
 bootstrap = flask_bootstrap.Bootstrap(app)
@@ -31,7 +32,7 @@ def echo(message):
 def onConnect():
 	print("*** Connected!")
 	who = 'localhost'
-	msg = { "text" : "{} Connected".format(who) } 
+	msg = { "text" : "{} Connected".format(who) }
 	return flask_socketio.emit('message', msg, broadcast=True)
 
 @socketio.on('disconnect', namespace='/test')

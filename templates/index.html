@@ -15,18 +15,24 @@
     <link href="static/css/bootstrap.min.css" rel="stylesheet">
     <!-- Bootstrap theme -->
     <link href="static/css/bootstrap-theme.min.css" rel="stylesheet">
-    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
-    <link href="static/css/ie10-viewport-bug-workaround.css" rel="stylesheet">
 
-    <!-- Custom styles for this template -->
-    <link href="theme.css" rel="stylesheet">
+    <style type="text/css">
+        .hdiv {
+          display: flex;
+          justify-content: space-between;
+        }
 
+        video.video-display {
+            width: auto;
+            height: auto;
+        }
+    </style>
   </head>
 
   <body>
 
     <!-- Fixed navbar -->
-    <nav class="navbar navbar-inverse navbar-fixed-top">
+    <!-- <nav class="navbar navbar-inverse navbar-fixed-top">
       <div class="container">
         <div class="navbar-header">
           <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
@@ -38,27 +44,27 @@
           <a class="navbar-brand" href="#">MRL Control</a>
         </div>
       </div>
-    </nav>
+    </nav> -->
 
     <div class="container theme-showcase" role="main">
       <!-- Main jumbotron for a primary marketing message or call to action -->
       <div class="jumbotron">
-         <div id='p5-controls'></div>
-
-         <img width=200 height=200 src="${url_for('video_feed')}">
-
-         <!-- <div class="alert alert-success" role="alert" display="none">
-           <strong>This is good!</strong> Everything is going as it should.
-         </div> -->
-         <div class="alert alert-info" role="alert" display="block">
-           <strong>One more step in the right direction.</strong> Keep going.
+         <div class='hdiv'>
+           <div id='p5-controls'></div>
          </div>
-         <!-- <div class="alert alert-danger" role="alert" display="none">
-           <strong>Oh snap!</strong> Houston, we have a problem!
-         </div> -->
+         <div id="alert-div">
+           <div id="success-alert" class="alert alert-success" role="alert">
+             <strong>This is good!</strong> Everything is going as it should.
+           </div>
+           <div id="info-alert" class="alert alert-info" role="alert">
+             <strong>One more step in the right direction.</strong> Keep going.
+           </div>
+           <div id="danger-alert" class="alert alert-danger" role="alert">
+             <strong>Oh snap!</strong> Houston, we have a problem!
+           </div>
+         </div>
       </div>
     </div> <!-- /container -->
-
 
     <!-- Bootstrap core JavaScript
     ================================================== -->
@@ -67,7 +73,6 @@
     <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/socket.io/1.3.5/socket.io.min.js"></script>
     <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/p5.js/0.5.6/p5.js"></script>
     <script type="text/javascript" src="static/js/bootstrap.min.js"></script>
-    <script type="text/javascript" src="static/js/docs.min.js"></script>
     <script type="text/javascript" src="static/js/controls.js"></script>
   </body>
 </html>

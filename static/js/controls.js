@@ -1,68 +1,54 @@
-var u;
-var count;
-var mods = [];
+var socket=Nil;
+var x;
+var y;
+var width;
+var height;
+var radius;
+var max_distance = 10;
+
+$(document).ready(function(){
+    socket = io.connect('http://localhost:5000/mrl');
+    // socket.on('message', function(msg) {
+    //     $('#messages').append('<p>Received: ' + msg.text + '</p>');
+    // });
+    // $('#send').click(function(event) {
+    //     socket.emit('message', { text : $('#msg').val()});
+    //     return false;
+    // });
+});
 
 function setup() {
-  var canvas = createCanvas(100, 100);
+  width = 400; // TODO: THIS NEEDS TO BE TAKEN FROM THE DOCUMENT AND TREATED AS DYNAMIC
+  height = 400;
+  radius = width/2;
+  var canvas = createCanvas(width, height);
   canvas.parent('p5-controls');
-  canvas.mousePressed(doStuff); // NOTE: THIS CAPTURES MOUSE EVENTS ONLY ON THE CANVAS
-  u = 50;
-  widthExtra = ((int(100/u))*u)+u;
-  count = int(widthExtra/u);
-  var index = 0;
-  for (var xc = 0; xc < count*2; xc++) {
-      mods[index++] = new Module((int(xc)*u),0);
-   }
+  canvas.mousePressed( function() {
+    // TODO: CONVERT FROM CARTESIAN TO POLAR
+    var max_radius = radius - 10;
+    var dx = mouseX - (width/2);
+    var dy = mouseY - (height/2);
+    var r = Math.min(max_radius, Math.sqrt(dx*dx + dy*dy));
+    var alpha = Math.atan2(dy, dx);
+    var rads = alpha;
+    var power = 100;
+    x = r * Math.cos(rads) + (width/2);
+    y = r * Math.sin(rads) + (height/2);
+    console.log( "r = " + r + "x = " + dx + ", y = " + dy);
+    distance = (max_distance * r ) / max_radius;
+    cmd = {distance:distance, rads:rads, power:power};
+    socket.emit('move', cmd)
+  });
+  background(0, 0, 0, 0);
 }
 
 function draw() {
   noStroke();
-  background(0);
-  for (var i = 0; i <= count; i++) {
-    mods[i].draw();
-  }
-}
-
-function doStuff() {
-  for (var i = 0; i <= count; i++) {
-    mods[i].Pressed();
-  }
-}
-
-function Module(_x, _y) {
-  this.x = _x;
-  this.y = _y;
-  this.j = 0;
-  this.k = 1;
-  this.forward = true;
-}
-
-Module.prototype.draw = function() {
-  push();
-  translate(this.x, this.y);
-  noStroke();
-  fill(255);
-  quad(this.j,0,this.j+25,0,this.j+25,height,this.j,height);
-  this.x = this.x + this.k;
-  if(this.x > widthExtra){
-    this.x = -u;
-  }
-  if(this.x < -u){
-    this.x = widthExtra;
-  }
-  pop();
-}
-
-Module.prototype.Pressed = function() {
-    if (this.forward === true){
-      this.k = this.k*-1;
-      this.forward = false;
-      } else {
-      this.k = this.k*-1;
-      this.forward = true;
-      }
-}
-
-function windowResized() {
-  resizeCanvas(100, 100);
+  // TODO: THE BACKGROUND SHOULD BE AN IMAGE
+  fill('blue');
+  ellipse(width/2, height/2, width, height);
+  fill('white');
+  ellipse(x, y, 10);
+  fill('yellow');
+  ellipse(width/2, height/2, width/10, height/10);
 }
